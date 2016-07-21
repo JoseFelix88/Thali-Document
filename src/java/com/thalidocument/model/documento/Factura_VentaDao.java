@@ -19,14 +19,15 @@ public class Factura_VentaDao extends database {
         if (rs.length > 0) {
             pedao = new PuntoEntregaDAO();
             fv = new Factura_Venta();
-            fv.setIdfactura(Integer.parseInt(rs[0][0].toString()));
+            fv.setDetalle_Soportes_FV(new Detalle_Soportes_FV());
+            fv.setIdradicado(Integer.parseInt(rs[0][0].toString()));
             fv.setFecha_paquete(DateUtil.getDate(rs[0][1]));
             fv.setPuntoEntrega(pedao.read(rs[0][2]));
-            fv.setFacturaInicio(rs[0][3].toString());
-            fv.setFacturaFinal(rs[0][4].toString());
-            fv.setFichero(rs[0][5].toString());
-            fv.setExtencion(rs[0][6].toString());
-            fv.setSize(rs[0][7].toString());
+            fv.getDetalle_Soportes_FV().setFacturaInicio(rs[0][3].toString());
+            fv.getDetalle_Soportes_FV().setFacturaFinal(rs[0][4].toString());
+            fv.getDetalle_Soportes_FV().setFichero(rs[0][5].toString());
+            fv.getDetalle_Soportes_FV().setExtencion(rs[0][6].toString());
+            fv.getDetalle_Soportes_FV().setSize(rs[0][7].toString());
             fv.setAutor(rs[0][8].toString());
             fv.setFechahoraingreso(DateUtil.getTimestamp(rs[0][9]));
         }
@@ -35,18 +36,19 @@ public class Factura_VentaDao extends database {
     
     public List<Factura_Venta> READ_ALL_FACTURA_VENTA(Object key) {
         Factura_Venta  fv = new Factura_Venta();
+        fv.setDetalle_Soportes_FV(new Detalle_Soportes_FV());
         List<Factura_Venta> list = new ArrayList<>();
         PuntoEntregaDAO pedao = new PuntoEntregaDAO();
         Object[][] rs = SELECT_SP("SELECT_FACTURA_VENTA", key);
         while (rs.length > 0) {
-            fv.setIdfactura(Integer.parseInt(rs[0][0].toString()));
+            fv.setIdradicado(Integer.parseInt(rs[0][0].toString()));
             fv.setFecha_paquete(DateUtil.getDate(rs[0][1]));
             fv.setPuntoEntrega(pedao.read(rs[0][2]));
-            fv.setFacturaInicio(rs[0][3].toString());
-            fv.setFacturaFinal(rs[0][4].toString());
-            fv.setFichero(rs[0][5].toString());
-            fv.setExtencion(rs[0][6].toString());
-            fv.setSize(rs[0][7].toString());
+            fv.getDetalle_Soportes_FV().setFacturaInicio(rs[0][3].toString());
+            fv.getDetalle_Soportes_FV().setFacturaFinal(rs[0][4].toString());
+            fv.getDetalle_Soportes_FV().setFichero(rs[0][5].toString());
+            fv.getDetalle_Soportes_FV().setExtencion(rs[0][6].toString());
+            fv.getDetalle_Soportes_FV().setSize(rs[0][7].toString());
             fv.setAutor(rs[0][8].toString());
             fv.setFechahoraingreso(DateUtil.getTimestamp(rs[0][9]));
             list.add(fv);
@@ -54,4 +56,21 @@ public class Factura_VentaDao extends database {
         return list;
     }
 
+    public int PROXIMO_RADICADO(){
+        Object param = 2+","+"'XY'";
+        Object[][] rs = SELECT_SP("SELECT_FACTURA_VENTA", param);
+        if (rs.length > 0 ) {
+            return Integer.parseInt(String.valueOf(rs[0][0]));
+        }
+        return 1;
+    }
+    
+    public int ID_PUNTO_ENTREGA(Object key){
+        Object param = 3+","+"'"+key+"'";
+        Object[][] rs = SELECT_SP("SELECT_FACTURA_VENTA", param);
+        if (rs.length > 0 ) {
+            return Integer.parseInt(String.valueOf(rs[0][0]));
+        }
+        return 0;
+    }
 }

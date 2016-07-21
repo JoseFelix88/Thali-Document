@@ -1,18 +1,61 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <body>
 
         <ui:composition template="./Template.xhtml">
- 
+
             <ui:define name="content">
-                <h2 align="center" style="font-size: 18px; color: #ff6633" >SOPORTES FACTURA DE VENTA</h2>
-                
+                <h:form id="formindex">
+                    <p:growl autoUpdate="false" id="msj"  showDetail="true" /> 
+
+                    <h2 align="center" style="font-size: 18px; color: #ff6633" >SOPORTES FACTURA DE VENTA</h2>
+                    <p:fieldset legend="Datos del Paquete" id="pnlpaquete">
+                        <h:panelGrid columns="2" id="pnldatapaquete">
+                            <h:outputLabel value="No. Radicado" for="txtnumradicado"/>
+                            <p:outputLabel id="txtnumradicado" value="#{documentoBean.factura_Venta.idradicado}" style="text-align: right" />
+                           
+                            <h:outputLabel value="Fecha del Paquete" for="jdpaquete"/>
+                            <p:calendar id="jdpaquete"  mode="popup" required="true" value="#{documentoBean.factura_Venta.fecha_paquete}"
+                                        requiredMessage="Selecciona la fecha del Paquete." 
+                                        effect="fold" navigator="true"   locale="es"
+                                        pattern="dd-MM-yyyy" mask="true" placeholder="dia-mes-año"  />
+                           
+                            <h:outputLabel value="Punto de Entrega" for="combopuntoentrega"/>
+                            <p:selectOneMenu id="combopuntoentrega" value="#{documentoBean.factura_Venta.puntoEntrega.nombre}"   required="true"
+                                             effect="fade" var="combopunto" style="width:260px" filter="true" filterMatchMode="contains" 
+                                             requiredMessage="Selecciona el Punto de Entrega."  converter="omnifaces.SelectItemsConverter">
+
+                                <f:selectItem itemLabel="Seleccione" itemValue="#{lista_punto.idpunto}" />
+                                <f:selectItems value="#{documentoBean.list_punto}" var="lista_punto"
+                                               itemLabel="#{lista_punto.nombre} - #{lista_punto.idpunto}" itemValue="#{lista_punto.nombre}" />
+                            </p:selectOneMenu>
+                           
+                            <h:outputLabel/>
+                            <p:fieldset legend="Rango de Facturas en el Archivo Cargado">
+                                <p:panelGrid columns="2">
+                                    <h:outputLabel value="Desde" for="fvinicio"/>
+                                    <p:inputText id="fvinicio" value="#{documentoBean.factura_Venta.detalle_Soportes_FV.facturaInicio}" validatorMessage="Ingresa la Factura donde Inicia el Archivo." required="true"
+                                                 style="text-align: right" />
+                                    <h:outputLabel value="Hasta" for="fvfinal"/>
+                                    <p:inputText id="fvfinal" value="#{documentoBean.factura_Venta.detalle_Soportes_FV.facturaFinal}" validatorMessage="Ingresa la Factura donde Finaliza el Archivo." required="true"
+                                                 style="text-align: right" />
+                                </p:panelGrid>
+                            </p:fieldset>
+                            <h:outputLabel value="Seleccionar Archivos" for="fileup"/>
+                            <p:fileUpload id="fileup"  fileUploadListener="#{documentoBean.handleFileUpload}" value="#{documentoBean.documento}" mode="advanced" dragDropSupport="false"
+                                          uploadLabel="Enviar" label="Cargar Archivo"  update="pnlpaquete,msj"  sizeLimit="10000000" allowTypes="/(\.|\/)(gif|jpe?g|png|pdf)$/" multiple="true" 
+                                          messageTemplate="Formato de Archivo Invalido."/>
+                        </h:panelGrid>
+                        <p:commandButton value="Guardar y Continuar" actionListener="#{documentoBean.saved_factura_venta}" update="formindex"/>
+                    </p:fieldset>
+                </h:form>
             </ui:define>
-
         </ui:composition>
-
     </body>
 </html>

@@ -101,16 +101,16 @@ public class Utilidades implements Serializable {
         msj = msj.toUpperCase();
         if (tipo == 1) {
             facesContext.addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_INFO, null, msj));
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", msj));
         }
 
         if (tipo == 2) {
-            facesContext.addMessage(null,new FacesMessage(FacesMessage.SEVERITY_WARN, null, msj));
+            facesContext.addMessage(null,new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia", msj));
         }
 
         if (tipo == 3) {
             facesContext.addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, null, msj));
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", msj));
         }
 
         if (tipo == 4) {

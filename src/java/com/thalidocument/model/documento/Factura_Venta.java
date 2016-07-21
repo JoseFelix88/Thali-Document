@@ -6,39 +6,22 @@ import java.util.Date;
 
 public class Factura_Venta implements Serializable {
 
-    private int idfactura;
+    private int Idradicado;
     private Date fecha_paquete;
     private PuntoEntrega puntoEntrega;
-    private String facturaInicio;
-    private String facturaFinal;
-    private String fichero;
-    private String extencion;
-    private String Size;
+    private Detalle_Soportes_FV detalle_Soportes_FV;
     private String autor;
     private Date fechahoraingreso;
 
     public Factura_Venta() {
     }
-
-    public Factura_Venta(int idfactura, Date fecha_paquete, PuntoEntrega puntoEntrega, String facturaInicio, String facturaFinal, String fichero, String extencion, String Size, String autor, Date fechahoraingreso) {
-        this.idfactura = idfactura;
-        this.fecha_paquete = fecha_paquete;
-        this.puntoEntrega = puntoEntrega;
-        this.facturaInicio = facturaInicio;
-        this.facturaFinal = facturaFinal;
-        this.fichero = fichero;
-        this.extencion = extencion;
-        this.Size = Size;
-        this.autor = autor;
-        this.fechahoraingreso = fechahoraingreso;
+ 
+    public int getIdradicado() {
+        return Idradicado;
     }
 
-    public int getIdfactura() {
-        return idfactura;
-    }
-
-    public void setIdfactura(int idfactura) {
-        this.idfactura = idfactura;
+    public void setIdradicado(int Idradicado) {
+        this.Idradicado = Idradicado;
     }
 
     public Date getFecha_paquete() {
@@ -56,45 +39,20 @@ public class Factura_Venta implements Serializable {
     public void setPuntoEntrega(PuntoEntrega puntoEntrega) {
         this.puntoEntrega = puntoEntrega;
     }
-
-    public String getFacturaInicio() {
-        return facturaInicio;
+    public Date getFechahoraingreso() {
+        return fechahoraingreso;
     }
 
-    public void setFacturaInicio(String facturaInicio) {
-        this.facturaInicio = facturaInicio;
+    public void setFechahoraingreso(Date fechahoraingreso) {
+        this.fechahoraingreso = fechahoraingreso;
     }
 
-    public String getFacturaFinal() {
-        return facturaFinal;
+    public Detalle_Soportes_FV getDetalle_Soportes_FV() {
+        return detalle_Soportes_FV;
     }
 
-    public void setFacturaFinal(String facturaFinal) {
-        this.facturaFinal = facturaFinal;
-    }
-
-    public String getFichero() {
-        return fichero;
-    }
-
-    public void setFichero(String fichero) {
-        this.fichero = fichero;
-    }
-
-    public String getExtencion() {
-        return extencion;
-    }
-
-    public void setExtencion(String extencion) {
-        this.extencion = extencion;
-    }
-
-    public String getSize() {
-        return Size;
-    }
-
-    public void setSize(String Size) {
-        this.Size = Size;
+    public void setDetalle_Soportes_FV(Detalle_Soportes_FV detalle_Soportes_FV) {
+        this.detalle_Soportes_FV = detalle_Soportes_FV;
     }
 
     public String getAutor() {
@@ -105,11 +63,5 @@ public class Factura_Venta implements Serializable {
         this.autor = autor;
     }
 
-    public Date getFechahoraingreso() {
-        return fechahoraingreso;
-    }
-
-    public void setFechahoraingreso(Date fechahoraingreso) {
-        this.fechahoraingreso = fechahoraingreso;
-    }
+  
 }

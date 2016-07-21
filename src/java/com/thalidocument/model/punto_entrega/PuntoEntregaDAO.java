@@ -63,6 +63,7 @@ public class PuntoEntregaDAO extends database implements crud<PuntoEntrega>{
                 list.add(pe);
             }
         } catch (Exception e) {
+            System.out.println("Eror al cargar lista de puntos: "+e);
         }
         
         return list;

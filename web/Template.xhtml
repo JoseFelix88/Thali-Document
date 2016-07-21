@@ -9,7 +9,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <h:outputStylesheet name="./css/default.css"/>
         <h:outputStylesheet name="./css/cssLayout.css"/>
-        <title>Thali Document</title>
+        <h:outputScript name="./js/locales.js"/>
+        <title>Thali - Document</title>
     </h:head>
 
     <h:body>
@@ -27,11 +28,14 @@
                         <p:submenu label="Cargar Soportes">
                             <p:menuitem value="Factura Venta" outcome="FormFacturaVenta" icon="ui-icon-clipboard" />
                         </p:submenu>
+                         <p:submenu label="Consultar Soportes">
+                            <p:menuitem value="Factura Venta" outcome="FormFacturaVenta" icon="ui-icon-clipboard" />
+                        </p:submenu>
                     </p:menu>
                 </h:form>
             </ui:insert>
         </div>
-        <div id="content" class="center_content" >
+        <div id="content" class="center_content" style="margin-left: 180px" >
             <ui:insert name="content">Content</ui:insert>
         </div>
     </h:body>
