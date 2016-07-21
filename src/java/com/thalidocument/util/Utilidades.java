@@ -14,6 +14,53 @@ import org.primefaces.model.UploadedFile;
 
 public class Utilidades implements Serializable {
 
+    public String mesDeFecha(int mes) {
+        String result = "";
+        switch (mes) {
+
+            case 0:
+                result = "01 Enero";
+                break;
+            case 1:
+                result = "02 Febrero";
+                break;
+            case 2:
+                result = "03 Marzo";
+                break;
+            case 3:
+                result = "04 Abril";
+                break;
+            case 4:
+                result = "05 Mayo";
+                break;
+            case 5:
+                result = "06 Junio";
+                break;
+            case 6:
+                result = "07 Julio";
+                break;
+            case 7:
+                result = "08 Agosto";
+                break;
+            case 8:
+                result = "09 Septiembre";
+                break;
+            case 9:
+                result = "10 Octubre";
+                break;
+            case 10:
+                result = "11 Noviembre";
+                break;
+            case 11:
+                result = "12 Diciembre";
+                break;
+            default:
+                result = "Error";
+                break;
+        }
+        return result.toUpperCase();
+    }
+
     public String formatearFecha(Date fecha) {
         try {
             SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");

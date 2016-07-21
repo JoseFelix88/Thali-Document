@@ -5,34 +5,34 @@ import com.thalidocument.model.documento.Factura_Venta;
 import com.thalidocument.model.documento.Factura_VentaDao;
 import com.thalidocument.model.punto_entrega.PuntoEntrega;
 import com.thalidocument.model.punto_entrega.PuntoEntregaDAO;
+import com.thalidocument.util.DateUtil;
 import com.thalidocument.util.Utilidades;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.servlet.ServletContext;
-import org.apache.commons.io.IOUtils;
-import org.primefaces.component.fileupload.FileUpload;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
+
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
 @ManagedBean
-@ViewScoped
-public class DocumentoBean implements Serializable {
+public class DocumentoBean {
 
     private Factura_Venta factura_Venta;
     Factura_VentaDao fvdao;
     private List<PuntoEntrega> list_punto;
     PuntoEntregaDAO puntoDao;
     Utilidades util = new Utilidades();
-    private UploadedFile SoporteFacturaVenta;
+    private UploadedFile Soporte;
 
     @PostConstruct
     public void init() {
@@ -57,12 +57,12 @@ public class DocumentoBean implements Serializable {
         this.list_punto = list_punto;
     }
 
-    public UploadedFile getSoporteFacturaVenta() {
-        return SoporteFacturaVenta;
+    public UploadedFile getSoporte() {
+        return Soporte;
     }
 
-    public void setSoporteFacturaVenta(UploadedFile SoporteFacturaVenta) {
-        this.SoporteFacturaVenta = SoporteFacturaVenta;
+    public void setSoporte(UploadedFile Soporte) {
+        this.Soporte = Soporte;
     }
 
     public void saved_factura_venta(ActionEvent event) {
@@ -102,24 +102,17 @@ public class DocumentoBean implements Serializable {
 
     }
 
-    public void handleFileUpload(ActionEvent event) throws IOException {
-        System.out.println("soporte: "+SoporteFacturaVenta);
-        /*factura_Venta.getDetalle_Soportes_FV().setExtencion(event.getFile().getContentType());
+    public void loadfile(FileUploadEvent event) {
+        factura_Venta.getDetalle_Soportes_FV().setExtencion(event.getFile().getContentType());
         factura_Venta.getDetalle_Soportes_FV().setFichero(event.getFile().getFileName());
-        factura_Venta.getDetalle_Soportes_FV().setSize("" + event.getFile().getSize());*/
-        subirFichero(SoporteFacturaVenta, "ficha empleado.pdf");
+        factura_Venta.getDetalle_Soportes_FV().setSize("" + event.getFile().getSize());
+        subirFichero(event.getFile(), event.getFile().getFileName());
     }
 
-    private void saved_soporte_factura() throws IOException {
-        ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
-        String realPath = (String) servletContext.getRealPath("/resources/data/suport/");
-
-        File file = new File(realPath);
-        if (file.isDirectory() == true) {
-            System.out.println("ruta- " + file.getPath() + " es una ruta: " + file.isAbsolute());
-            util.agregar_documento(SoporteFacturaVenta, file.getPath(), factura_Venta.getDetalle_Soportes_FV().getFichero(),
-                    FacesContext.getCurrentInstance());
-        }
+    public void saved_soporte_factura(ActionEvent ae) {
+        String ruta_soporte = "D://FACTURACION/SOPORTES/"+DateUtil.getDate(factura_Venta.getFecha_paquete());
+        System.out.println(ruta_soporte);
+        util.lanzarMSJ(FacesContext.getCurrentInstance(), 1, ruta_soporte);
     }
 
     private void NUMERO_RADICADO() {
@@ -127,12 +120,25 @@ public class DocumentoBean implements Serializable {
     }
 
     public  void subirFichero(UploadedFile uploadFile,
-            String nombreFichero) throws IOException {
-        System.out.println("documento: "+uploadFile);
-        String ruta = "D://" + nombreFichero;
-        File file = new File(ruta);
-        FileOutputStream fos = new FileOutputStream(file);
-        IOUtils.copy(uploadFile.getInputstream(), fos);
+            String nombreFichero) {
+        FileOutputStream fos = null;
+        try {
+            String ruta = "D://FACTURACION/SOPORTES/" + nombreFichero;
+            File file = new File(ruta);
+            fos = new FileOutputStream(file);
+            IOUtils.copy(uploadFile.getInputstream(), fos);
+            util.lanzarMSJ(FacesContext.getCurrentInstance(), 1, "documento enviado correctamente");
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(DocumentoBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(DocumentoBean.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                fos.close();
+            } catch (IOException ex) {
+                Logger.getLogger(DocumentoBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
 
     }
 }

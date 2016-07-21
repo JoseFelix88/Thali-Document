@@ -11,7 +11,7 @@
         <ui:composition template="./Template.xhtml">
 
             <ui:define name="content">
-                <h:form id="formindex"  enctype="multipart/form-data" >
+                <h:form id="formindex">
                     <p:growl autoUpdate="false" id="msj"  showDetail="true" /> 
 
                     <h2 align="center" style="font-size: 18px; color: #ff6633" >SOPORTES FACTURA DE VENTA</h2>
@@ -19,23 +19,23 @@
                         <h:panelGrid columns="2" id="pnldatapaquete">
                             <h:outputLabel value="No. Radicado" for="txtnumradicado"/>
                             <p:outputLabel id="txtnumradicado" value="#{documentoBean.factura_Venta.idradicado}" style="text-align: right" />
-                           
+
                             <h:outputLabel value="Fecha del Paquete" for="jdpaquete"/>
                             <p:calendar id="jdpaquete"  mode="popup" required="true" value="#{documentoBean.factura_Venta.fecha_paquete}"
                                         requiredMessage="Selecciona la fecha del Paquete." 
                                         effect="fold" navigator="true"   locale="es"
                                         pattern="dd-MM-yyyy" mask="true" placeholder="dia-mes-año"  />
-                           
+
                             <h:outputLabel value="Punto de Entrega" for="combopuntoentrega"/>
                             <p:selectOneMenu id="combopuntoentrega" value="#{documentoBean.factura_Venta.puntoEntrega.nombre}"   required="true"
                                              effect="fade" var="combopunto" style="width:260px" filter="true" filterMatchMode="contains" 
-                                             requiredMessage="Selecciona el Punto de Entrega."  converter="omnifaces.SelectItemsConverter">
+                                             requiredMessage="Selecciona el Punto de Entrega." >
 
                                 <f:selectItem itemLabel="Seleccione" itemValue="#{lista_punto.idpunto}" />
                                 <f:selectItems value="#{documentoBean.list_punto}" var="lista_punto"
                                                itemLabel="#{lista_punto.nombre} - #{lista_punto.idpunto}" itemValue="#{lista_punto.nombre}" />
                             </p:selectOneMenu>
-                           
+
                             <h:outputLabel/>
                             <p:fieldset legend="Rango de Facturas en el Archivo Cargado">
                                 <p:panelGrid columns="2">
@@ -47,13 +47,17 @@
                                                  style="text-align: right" />
                                 </p:panelGrid>
                             </p:fieldset>
-                            <h:outputLabel value="Seleccionar Archivos" for="fileup"/>
-                            <p:fileUpload id="fileup" value="#{documentoBean.soporteFacturaVenta}"  fileUploadListener="#{documentoBean.handleFileUpload}"  mode="advanced" dragDropSupport="false"
-                                          uploadLabel="Enviar" label="Cargar Archivo"  update="msj" multiple="true" />
-                                         
+
                         </h:panelGrid>
-                        <p:commandButton value="Guardar y Continuar" actionListener="#{documentoBean.saved_factura_venta}" update="formindex"/>
+                        <h:outputLabel />
+                        <p:fileUpload  id="up" value="#{documentoBean.soporte}"  
+                                       fileUploadListener="#{documentoBean.loadfile}" mode="advanced" 
+                                       uploadLabel="Enviar" label="Seleccionar" update="msj" multiple="true" />
+                        
                     </p:fieldset>
+                </h:form>
+                <h:form id="frmbtn">
+                    <p:commandButton value="Guardar y Continuar" actionListener="#{documentoBean.saved_factura_venta(event)}" ajax="false" update="formindex"/>
                 </h:form>
             </ui:define>
         </ui:composition>

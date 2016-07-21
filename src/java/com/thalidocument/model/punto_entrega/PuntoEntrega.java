@@ -1,8 +1,10 @@
  
 package com.thalidocument.model.punto_entrega;
 
+import java.io.Serializable;
+
  
-public class PuntoEntrega {
+public class PuntoEntrega implements Serializable {
         
     private int idpunto;
     private String nombre;
