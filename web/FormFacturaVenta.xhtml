@@ -11,7 +11,7 @@
         <ui:composition template="./Template.xhtml">
 
             <ui:define name="content">
-                <h:form id="formindex">
+                <h:form id="formindex"  enctype="multipart/form-data" >
                     <p:growl autoUpdate="false" id="msj"  showDetail="true" /> 
 
                     <h2 align="center" style="font-size: 18px; color: #ff6633" >SOPORTES FACTURA DE VENTA</h2>
@@ -48,9 +48,9 @@
                                 </p:panelGrid>
                             </p:fieldset>
                             <h:outputLabel value="Seleccionar Archivos" for="fileup"/>
-                            <p:fileUpload id="fileup"  fileUploadListener="#{documentoBean.handleFileUpload}" value="#{documentoBean.documento}" mode="advanced" dragDropSupport="false"
-                                          uploadLabel="Enviar" label="Cargar Archivo"  update="pnlpaquete,msj"  sizeLimit="10000000" allowTypes="/(\.|\/)(gif|jpe?g|png|pdf)$/" multiple="true" 
-                                          messageTemplate="Formato de Archivo Invalido."/>
+                            <p:fileUpload id="fileup" value="#{documentoBean.soporteFacturaVenta}"  fileUploadListener="#{documentoBean.handleFileUpload}"  mode="advanced" dragDropSupport="false"
+                                          uploadLabel="Enviar" label="Cargar Archivo"  update="msj" multiple="true" />
+                                         
                         </h:panelGrid>
                         <p:commandButton value="Guardar y Continuar" actionListener="#{documentoBean.saved_factura_venta}" update="formindex"/>
                     </p:fieldset>

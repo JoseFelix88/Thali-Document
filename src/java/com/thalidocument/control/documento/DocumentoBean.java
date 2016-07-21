@@ -7,6 +7,7 @@ import com.thalidocument.model.punto_entrega.PuntoEntrega;
 import com.thalidocument.model.punto_entrega.PuntoEntregaDAO;
 import com.thalidocument.util.Utilidades;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
@@ -17,6 +18,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.servlet.ServletContext;
+import org.apache.commons.io.IOUtils;
 import org.primefaces.component.fileupload.FileUpload;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
@@ -31,7 +33,6 @@ public class DocumentoBean implements Serializable {
     PuntoEntregaDAO puntoDao;
     Utilidades util = new Utilidades();
     private UploadedFile SoporteFacturaVenta;
-    
 
     @PostConstruct
     public void init() {
@@ -100,52 +101,38 @@ public class DocumentoBean implements Serializable {
         return key;
 
     }
-    
-     public void handleFileUpload(FileUploadEvent event) {
-         factura_Venta.getDetalle_Soportes_FV().setExtencion(event.getFile().getContentType());
-         factura_Venta.getDetalle_Soportes_FV().setFichero(event.getFile().getFileName());
-         factura_Venta.getDetalle_Soportes_FV().setSize(""+event.getFile().getSize());
-         String datafactura = "fecha paquete: "+factura_Venta.getFecha_paquete()+" - punto entrega: "+fvdao.ID_PUNTO_ENTREGA(factura_Venta.getPuntoEntrega().getNombre())+"\n"
-                 + "inicio: "+factura_Venta.getDetalle_Soportes_FV().getFacturaInicio()+" - final: "+factura_Venta.getDetalle_Soportes_FV().getFacturaFinal();
-         util.lanzarMSJ(FacesContext.getCurrentInstance(), 1, datafactura);
-   
+
+    public void handleFileUpload(ActionEvent event) throws IOException {
+        System.out.println("soporte: "+SoporteFacturaVenta);
+        /*factura_Venta.getDetalle_Soportes_FV().setExtencion(event.getFile().getContentType());
+        factura_Venta.getDetalle_Soportes_FV().setFichero(event.getFile().getFileName());
+        factura_Venta.getDetalle_Soportes_FV().setSize("" + event.getFile().getSize());*/
+        subirFichero(SoporteFacturaVenta, "ficha empleado.pdf");
     }
-     
-     public void saved_soporte_factura(ActionEvent event) throws IOException{
+
+    private void saved_soporte_factura() throws IOException {
         ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
         String realPath = (String) servletContext.getRealPath("/resources/data/suport/");
-       
+
         File file = new File(realPath);
         if (file.isDirectory() == true) {
             System.out.println("ruta- " + file.getPath() + " es una ruta: " + file.isAbsolute());
-            util.agregarImagen( SoporteFacturaVenta, file.getPath(), factura_Venta.getDetalle_Soportes_FV().getFichero(),
-                    FacesContext.getCurrentInstance());
-
-        } else {
-            util.crearDirecctorio(urlempleado,
-                    String.valueOf(empleado.getIdempleados()));
-
-            util.lanzarMSJ(FacesContext.getCurrentInstance(), 1, "FOLDER PARA EL EMPLEADO " + empleado.getApellido1() + ""
-                    + " " + empleado.getNombre1() + " CREADO CORRECTAMENTE.");
-
-            util.agregarImagen(fotoEmpleado, urlempleado, String.valueOf(empleado.getIdempleados()),
+            util.agregar_documento(SoporteFacturaVenta, file.getPath(), factura_Venta.getDetalle_Soportes_FV().getFichero(),
                     FacesContext.getCurrentInstance());
         }
-
-        String tipoarchivo = fotoEmpleado.getContentType().replace("image/", ".");
-        dAO.asignarFotoEmpleado(String.valueOf(empleado.getIdempleados()).concat(tipoarchivo),
-                String.valueOf(empleado.getIdempleados()));
-     }
+    }
 
     private void NUMERO_RADICADO() {
         factura_Venta.setIdradicado(fvdao.PROXIMO_RADICADO());
     }
 
-    public FileUpload getDocumento() {
-        return documento;
-    }
+    public  void subirFichero(UploadedFile uploadFile,
+            String nombreFichero) throws IOException {
+        System.out.println("documento: "+uploadFile);
+        String ruta = "D://" + nombreFichero;
+        File file = new File(ruta);
+        FileOutputStream fos = new FileOutputStream(file);
+        IOUtils.copy(uploadFile.getInputstream(), fos);
 
-    public void setDocumento(FileUpload documento) {
-        this.documento = documento;
     }
 }

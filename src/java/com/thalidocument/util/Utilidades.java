@@ -54,38 +54,24 @@ public class Utilidades implements Serializable {
         return false;
     }
 
-    public void agregarImagen(UploadedFile uf, String rutaFile,
+    public void agregar_documento(UploadedFile uf, String rutaFile,
             String nombre_Archivo, FacesContext facesContext) throws IOException {
         InputStream inputStream = null;
         OutputStream outputStream = null;
-        String[] extenciones = {".jpeg", ".png", ".gif", ".tiff", ".bmp"};
-        String tipoarchivo = uf.getContentType().replace("image/", ".");
+        String[] extenciones = {".jpeg", ".png", ".gif", ".tiff", ".bmp", ".pdf"};
         try {
-            if (uf.getSize() <= 0) {
-                lanzarMSJ(facesContext, 3, "Ud. debe seleccionar un archivo de imagen");
-                return;
+            outputStream = new FileOutputStream(new File(rutaFile + "/" + nombre_Archivo));
+            lanzarMSJ(facesContext, 1, "" + outputStream);
+            inputStream = uf.getInputstream();
+            int read = 0;
+            byte[] bytes = new byte[1024];
+            while ((read = inputStream.read(bytes)) != -1) {
+                outputStream.write(bytes, 0, read);
             }
+            lanzarMSJ(facesContext, 1, "Documento Subido correctamente");
 
-            if (uf.getSize() > 2097152) {
-                lanzarMSJ(facesContext, 3, "El archivo no puede ser más de 2mb");
-                return;
-            }
-
-            for (String extencione : extenciones) {
-                if (extencione == null ? tipoarchivo == null : extencione.equals(tipoarchivo)) {
-                    outputStream = new FileOutputStream(new File(rutaFile + "/" + nombre_Archivo + "" + tipoarchivo));
-                    inputStream = uf.getInputstream();
-                    int read = 0;
-                    byte[] bytes = new byte[1024];
-                    while ((read = inputStream.read(bytes)) != -1) {
-                        outputStream.write(bytes, 0, read);
-                    }
-                    lanzarMSJ(facesContext, 1, "Imagen Subida correctamente");
-                }
-            }
         } catch (Exception ex) {
-            lanzarMSJ(facesContext, 4, "Ocurrio un problema al momento de realizar la carga de la imagen,"
-                    + " contacta a tu admin: " + ex);
+            lanzarMSJ(facesContext, 4, "Ocurrio un problema al momento de realizar la carga del Documento: " + ex);
         } finally {
             if (inputStream != null) {
                 inputStream.close();
@@ -105,7 +91,7 @@ public class Utilidades implements Serializable {
         }
 
         if (tipo == 2) {
-            facesContext.addMessage(null,new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia", msj));
+            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia", msj));
         }
 
         if (tipo == 3) {
