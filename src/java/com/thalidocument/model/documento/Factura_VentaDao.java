@@ -15,7 +15,8 @@ public class Factura_VentaDao extends database {
     public Factura_Venta READ_FACTURA_VENTA(Object key) {
         Factura_Venta fv = null;
         PuntoEntregaDAO pedao;
-        Object[][] rs = SELECT_SP("SELECT_FACTURA_VENTA", key);
+        Object param = 3 + "," + "'" + key + "'";
+        Object[][] rs = SELECT_SP("SELECT_FACTURA_VENTA", param);
         if (rs.length > 0) {
             pedao = new PuntoEntregaDAO();
             fv = new Factura_Venta();
@@ -33,9 +34,9 @@ public class Factura_VentaDao extends database {
         }
         return fv;
     }
-    
+
     public List<Factura_Venta> READ_ALL_FACTURA_VENTA(Object key) {
-        Factura_Venta  fv = new Factura_Venta();
+        Factura_Venta fv = new Factura_Venta();
         fv.setDetalle_Soportes_FV(new Detalle_Soportes_FV());
         List<Factura_Venta> list = new ArrayList<>();
         PuntoEntregaDAO pedao = new PuntoEntregaDAO();
@@ -56,21 +57,31 @@ public class Factura_VentaDao extends database {
         return list;
     }
 
-    public int PROXIMO_RADICADO(){
-        Object param = 2+","+"'XY'";
+    public int PROXIMO_RADICADO() {
+        Object param = 2 + "," + "'XY'";
         Object[][] rs = SELECT_SP("SELECT_FACTURA_VENTA", param);
-        if (rs.length > 0 ) {
+        if (rs.length > 0) {
             return Integer.parseInt(String.valueOf(rs[0][0]));
         }
         return 1;
     }
-    
-    public int ID_PUNTO_ENTREGA(Object key){
-        Object param = 3+","+"'"+key+"'";
+
+    public int ID_PUNTO_ENTREGA(Object key) {
+        Object param = 3 + "," + "'" + key + "'";
         Object[][] rs = SELECT_SP("SELECT_FACTURA_VENTA", param);
-        if (rs.length > 0 ) {
+        if (rs.length > 0) {
             return Integer.parseInt(String.valueOf(rs[0][0]));
         }
         return 0;
     }
+
+    public String CIUDAD_PUNTO_ENTREGA(Object key) {
+        Object param = 4 + "," + "'" + key + "'";
+        Object[][] rs = SELECT_SP("SELECT_FACTURA_VENTA", param);
+        if (rs.length > 0) {
+            return String.valueOf(rs[0][0]);
+        }
+        return null;
+    }
+
 }

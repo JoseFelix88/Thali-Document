@@ -56,6 +56,7 @@ public class Factura_Venta implements Serializable {
     }
 
     public String getAutor() {
+        autor = "1102819530";
         return autor;
     }
 

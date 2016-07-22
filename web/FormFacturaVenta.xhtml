@@ -33,7 +33,7 @@
 
                                 <f:selectItem itemLabel="Seleccione" itemValue="#{lista_punto.idpunto}" />
                                 <f:selectItems value="#{documentoBean.list_punto}" var="lista_punto"
-                                               itemLabel="#{lista_punto.nombre} - #{lista_punto.idpunto}" itemValue="#{lista_punto.nombre}" />
+                                               itemLabel="#{lista_punto.nombre}" itemValue="#{lista_punto.nombre}" />
                             </p:selectOneMenu>
 
                             <h:outputLabel/>
@@ -56,7 +56,8 @@
                     </p:fieldset>
                 </h:form>
                 <h:form id="frmbtn">
-                    <p:commandButton value="Guardar y Continuar" actionListener="#{documentoBean.saved_factura_venta(event)}" ajax="false" update="formindex"/>
+                    <p:commandButton value="Guardar y Continuar" 
+                                     actionListener="#{documentoBean.saved_factura_venta(event)}" update=":formindex"/>
                 </h:form>
             </ui:define>
         </ui:composition>

@@ -33,6 +33,7 @@ public class DocumentoBean {
     PuntoEntregaDAO puntoDao;
     Utilidades util = new Utilidades();
     private UploadedFile Soporte;
+    String RUTA_DOCUMENTO = "D://Soportes/";
 
     @PostConstruct
     public void init() {
@@ -79,7 +80,7 @@ public class DocumentoBean {
     }
 
     private Object[] cargar_data_FV(int opcion) {
-        Object[] key = new Object[10];
+        Object[] key = new Object[12];
         if (opcion == 0) {
             key[0] = opcion;
         }
@@ -97,7 +98,9 @@ public class DocumentoBean {
         key[6] = factura_Venta.getDetalle_Soportes_FV().getFichero();
         key[7] = factura_Venta.getDetalle_Soportes_FV().getExtencion();
         key[8] = factura_Venta.getDetalle_Soportes_FV().getSize();
-        key[9] = factura_Venta.getAutor();
+        key[9] = rutapaquete();
+        key[10] = factura_Venta.getAutor();
+        key[11] = 0;
         return key;
 
     }
@@ -110,7 +113,7 @@ public class DocumentoBean {
     }
 
     public void saved_soporte_factura(ActionEvent ae) {
-        String ruta_soporte = "D://FACTURACION/SOPORTES/"+DateUtil.getDate(factura_Venta.getFecha_paquete());
+        String ruta_soporte = "D://FACTURACION/SOPORTES/" + DateUtil.getDate(factura_Venta.getFecha_paquete());
         System.out.println(ruta_soporte);
         util.lanzarMSJ(FacesContext.getCurrentInstance(), 1, ruta_soporte);
     }
@@ -119,7 +122,7 @@ public class DocumentoBean {
         factura_Venta.setIdradicado(fvdao.PROXIMO_RADICADO());
     }
 
-    public  void subirFichero(UploadedFile uploadFile,
+    public void subirFichero(UploadedFile uploadFile,
             String nombreFichero) {
         FileOutputStream fos = null;
         try {
@@ -140,5 +143,19 @@ public class DocumentoBean {
             }
         }
 
+    }
+
+    private Object rutapaquete() {
+        String path = RUTA_DOCUMENTO + "/" + DateUtil.getYear(factura_Venta.getFecha_paquete()) + "/" + ""
+                + util.mesDeFecha(DateUtil.getMonth(factura_Venta.getFecha_paquete())) + "/"
+                + fvdao.CIUDAD_PUNTO_ENTREGA(factura_Venta.getPuntoEntrega().getNombre()) + "/"
+                + DateUtil.getDate(factura_Venta.getFecha_paquete()) + "/";
+        System.out.println("ruta: "+path);
+        File ruta = new File(path);
+        if (ruta.isDirectory() != true) {
+            File nuevaruta = new File(ruta.getPath());
+            nuevaruta.mkdirs();
+        }
+        return ruta.getPath();
     }
 }
