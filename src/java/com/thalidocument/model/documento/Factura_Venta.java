@@ -10,7 +10,11 @@ public class Factura_Venta implements Serializable {
     private Date fecha_paquete;
     private PuntoEntrega puntoEntrega;
     private Detalle_Soportes_FV detalle_Soportes_FV;
-    private String autor;
+    private String nota;
+    private String factinicio;
+    private String factfinal;
+    private int cantFolios;
+    private int cantFacturas;
     private Date fechahoraingreso;
 
     public Factura_Venta() {
@@ -55,12 +59,44 @@ public class Factura_Venta implements Serializable {
         this.detalle_Soportes_FV = detalle_Soportes_FV;
     }
 
-    public String getAutor() {
-        return autor;
+    public String getNota() {
+       return nota;
     }
 
-    public void setAutor(String autor) {
-        this.autor = autor;
+    public void setNota(String nota) {
+        this.nota = nota;
+    }
+
+    public String getFactinicio() {
+        return factinicio;
+    }
+
+    public void setFactinicio(String factinicio) {
+        this.factinicio = factinicio;
+    }
+
+    public String getFactfinal() {
+        return factfinal;
+    }
+
+    public void setFactfinal(String factfinal) {
+        this.factfinal = factfinal;
+    }
+
+    public int getCantFolios() {
+        return cantFolios;
+    }
+
+    public void setCantFolios(int cantFolios) {
+        this.cantFolios = cantFolios;
+    }
+
+    public int getCantFacturas() {
+        return cantFacturas;
+    }
+
+    public void setCantFacturas(int cantFacturas) {
+        this.cantFacturas = cantFacturas;
     }
 
   

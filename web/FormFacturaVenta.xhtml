@@ -38,21 +38,27 @@
                             <p:fieldset legend="Rango de Facturas en el Archivo Cargado">
                                 <p:panelGrid columns="2">
                                     <h:outputLabel value="Desde" for="fvinicio"/>
-                                    <p:inputText id="fvinicio" value="#{documentoBean.factura_Venta.detalle_Soportes_FV.facturaInicio}"
+                                    <p:inputText id="fvinicio" value="#{documentoBean.factura_Venta.factinicio}"
                                                  validatorMessage="Ingresa la Factura donde Inicia el Archivo." required="true"
                                                  style="text-align: right" />
                                     <h:outputLabel value="Hasta" for="fvfinal"/>
-                                    <p:inputText id="fvfinal" value="#{documentoBean.factura_Venta.detalle_Soportes_FV.facturaFinal}" validatorMessage="Ingresa la Factura donde Finaliza el Archivo." required="true"
+                                    <p:inputText id="fvfinal" value="#{documentoBean.factura_Venta.factfinal}" validatorMessage="Ingresa la Factura donde Finaliza el Archivo." required="true"
                                                  style="text-align: right" />
+                                    <h:outputLabel value="Observacion" for="idnota"/>
+                                    <p:inputTextarea  id="idnota" value="#{documentoBean.factura_Venta.nota}"
+                                                      style="text-align: justify" />
                                 </p:panelGrid>
                             </p:fieldset>
 
                         </h:panelGrid>
-                         
+
                     </p:fieldset>
-                    <p:commandButton value="Guardar y Continuar"  update="pnlpaquete"
+
+                    <p:commandButton value="Guardar y Continuar"  update="pnlpaquete,msj"
                                      actionListener="#{documentoBean.saved_factura_venta(event)}" />
+
                 </h:form>
+
             </ui:define>
         </ui:composition>
     </body>

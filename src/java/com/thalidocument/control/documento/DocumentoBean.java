@@ -33,6 +33,7 @@ public class DocumentoBean {
     PuntoEntregaDAO puntoDao;
     Utilidades util = new Utilidades();
     private UploadedFile Soporte;
+    String RUTA_DOCUMENTO = "D://Soportes/";
 
     @PostConstruct
     public void init() {
@@ -66,8 +67,8 @@ public class DocumentoBean {
     }
 
     public void saved_factura_venta(ActionEvent event) {
-        System.out.println("Factura Venta: "+factura_Venta);
-        System.out.println("idradicado: "+factura_Venta.getFecha_paquete());
+        System.out.println("Factura Venta: " + factura_Venta);
+        System.out.println("idradicado: " + factura_Venta.getFecha_paquete());
         fvdao = new Factura_VentaDao();
         if (fvdao.READ_FACTURA_VENTA(factura_Venta.getIdradicado()) == null) {
             if (fvdao.CRUD_FACTURA(cargar_data_FV(0)) != false) {
@@ -81,7 +82,7 @@ public class DocumentoBean {
     }
 
     private Object[] cargar_data_FV(int opcion) {
-        Object[] key = new Object[10];
+        Object[] key = new Object[7];
         if (opcion == 0) {
             key[0] = opcion;
         }
@@ -92,14 +93,11 @@ public class DocumentoBean {
             key[0] = opcion;
         }
         key[1] = factura_Venta.getIdradicado();
-        key[2] = util.formatearFecha(factura_Venta.getFecha_paquete());
+        key[2] = "'" + util.formatearFecha(factura_Venta.getFecha_paquete()) + "'";
         key[3] = fvdao.ID_PUNTO_ENTREGA(factura_Venta.getPuntoEntrega().getNombre());
-        key[4] = factura_Venta.getDetalle_Soportes_FV().getFacturaInicio();
-        key[5] = factura_Venta.getDetalle_Soportes_FV().getFacturaFinal();
-        key[6] = factura_Venta.getDetalle_Soportes_FV().getFichero();
-        key[7] = factura_Venta.getDetalle_Soportes_FV().getExtencion();
-        key[8] = factura_Venta.getDetalle_Soportes_FV().getSize();
-        key[9] = factura_Venta.getAutor();
+        key[4] = "'" + factura_Venta.getNota() + "'";
+        key[5] = "'" + factura_Venta.getFactinicio() + "'";
+        key[6] = "'" + factura_Venta.getFactfinal() + "'";
         return key;
 
     }
@@ -112,7 +110,7 @@ public class DocumentoBean {
     }
 
     public void saved_soporte_factura(ActionEvent ae) {
-        String ruta_soporte = "D://FACTURACION/SOPORTES/"+DateUtil.getDate(factura_Venta.getFecha_paquete());
+        String ruta_soporte = "D://FACTURACION/SOPORTES/" + DateUtil.getDate(factura_Venta.getFecha_paquete());
         System.out.println(ruta_soporte);
         util.lanzarMSJ(FacesContext.getCurrentInstance(), 1, ruta_soporte);
     }
@@ -121,7 +119,7 @@ public class DocumentoBean {
         factura_Venta.setIdradicado(fvdao.PROXIMO_RADICADO());
     }
 
-    public  void subirFichero(UploadedFile uploadFile,
+    public void subirFichero(UploadedFile uploadFile,
             String nombreFichero) {
         FileOutputStream fos = null;
         try {
@@ -142,5 +140,19 @@ public class DocumentoBean {
             }
         }
 
+    }
+
+    private Object rutapaquete() {
+        String path = RUTA_DOCUMENTO + "/" + DateUtil.getYear(factura_Venta.getFecha_paquete()) + "/" + ""
+                + util.mesDeFecha(DateUtil.getMonth(factura_Venta.getFecha_paquete())) + "/"
+                + fvdao.CIUDAD_PUNTO_ENTREGA(factura_Venta.getPuntoEntrega().getNombre()) + "/"
+                + DateUtil.getDate(factura_Venta.getFecha_paquete()) + "/";
+        System.out.println("ruta: " + path);
+        File ruta = new File(path);
+        if (ruta.isDirectory() != true) {
+            File nuevaruta = new File(ruta.getPath());
+            nuevaruta.mkdirs();
+        }
+        return ruta.getPath();
     }
 }
