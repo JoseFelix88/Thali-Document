@@ -7,9 +7,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <body>
-
         <ui:composition template="./Template.xhtml">
-
             <ui:define name="content">
                 <h:form id="formindex">
                     <p:growl autoUpdate="false" id="msj"  showDetail="true" /> 
@@ -33,14 +31,15 @@
 
                                 <f:selectItem itemLabel="Seleccione" itemValue="#{lista_punto.idpunto}" />
                                 <f:selectItems value="#{documentoBean.list_punto}" var="lista_punto"
-                                               itemLabel="#{lista_punto.nombre} - #{lista_punto.idpunto}" itemValue="#{lista_punto.nombre}" />
+                                               itemLabel="#{lista_punto.nombre}" itemValue="#{lista_punto.nombre}" />
                             </p:selectOneMenu>
 
                             <h:outputLabel/>
                             <p:fieldset legend="Rango de Facturas en el Archivo Cargado">
                                 <p:panelGrid columns="2">
                                     <h:outputLabel value="Desde" for="fvinicio"/>
-                                    <p:inputText id="fvinicio" value="#{documentoBean.factura_Venta.detalle_Soportes_FV.facturaInicio}" validatorMessage="Ingresa la Factura donde Inicia el Archivo." required="true"
+                                    <p:inputText id="fvinicio" value="#{documentoBean.factura_Venta.detalle_Soportes_FV.facturaInicio}"
+                                                 validatorMessage="Ingresa la Factura donde Inicia el Archivo." required="true"
                                                  style="text-align: right" />
                                     <h:outputLabel value="Hasta" for="fvfinal"/>
                                     <p:inputText id="fvfinal" value="#{documentoBean.factura_Venta.detalle_Soportes_FV.facturaFinal}" validatorMessage="Ingresa la Factura donde Finaliza el Archivo." required="true"
@@ -49,14 +48,10 @@
                             </p:fieldset>
 
                         </h:panelGrid>
-                        <h:outputLabel />
-                        <p:fileUpload  id="up" value="#{documentoBean.soporte}"  
-                                       fileUploadListener="#{documentoBean.loadfile}" mode="advanced" 
-                                       uploadLabel="Enviar" label="Seleccionar" update="msj" multiple="true" />
+                         
                     </p:fieldset>
-                </h:form>
-                <h:form id="frmbtn">
-                    <p:commandButton value="Guardar y Continuar" actionListener="#{documentoBean.saved_factura_venta(event)}" ajax="false" update="formindex"/>
+                    <p:commandButton value="Guardar y Continuar"  update="pnlpaquete"
+                                     actionListener="#{documentoBean.saved_factura_venta(event)}" />
                 </h:form>
             </ui:define>
         </ui:composition>

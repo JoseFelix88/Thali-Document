@@ -66,6 +66,8 @@ public class DocumentoBean {
     }
 
     public void saved_factura_venta(ActionEvent event) {
+        System.out.println("Factura Venta: "+factura_Venta);
+        System.out.println("idradicado: "+factura_Venta.getFecha_paquete());
         fvdao = new Factura_VentaDao();
         if (fvdao.READ_FACTURA_VENTA(factura_Venta.getIdradicado()) == null) {
             if (fvdao.CRUD_FACTURA(cargar_data_FV(0)) != false) {
